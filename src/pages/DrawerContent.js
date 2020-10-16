@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, DevSettings } from 'react-native';
+import {View, StyleSheet, Image, DevSettings } from 'react-native';
 import {
     DrawerContentScrollView,
     DrawerItem
@@ -29,7 +29,7 @@ export function DrawerContent(props){
                 <View style={styles.drawerContent}>
                     <View style={styles.userInfoSection}>
                         <View style={{marginLeft: 15, flexDirection: 'column'}}>
-                            <Title style={styles.title}>{EstadoApp.getUsuario().props.nome}</Title>
+                            <Title style={styles.title}>Olá, {EstadoApp.getUsuario().props.nome}!</Title>
                         </View>
                     </View>
 
@@ -38,19 +38,19 @@ export function DrawerContent(props){
                 <Drawer.Section style={styles.drawerSection}>
                     <DrawerItem
                         icon={({color, size}) =>(
-                            <FontAwesomeIcon icon={faHome}  color="#000" />
+                            <Image source={require("../assets/images/menu_home.png")}style={{width: 25, height: 25}}/>
                         )}
                         label="Principal"
-                        labelStyle={{color: '#000'}}
-                        onPress={() =>{props.navigation.dispatch(CommonActions.reset({index:0,routes:[{name: 'Principal'}]}))}}
+                        labelStyle={{color: '#000', fontFamily: 'Montserrat-Bold'}}
+                        onPress={() =>{props.navigation.dispatch(CommonActions.reset({index:0,routes:[{name: 'Principal'}]})); props.navigation.dispatch(DrawerActions.closeDrawer());}}
                     />
                     
                     <DrawerItem
                         icon={({color, size}) =>(
-                            <FontAwesomeIcon icon={faUsers}  color="#000" />
+                            <Image source={require("../assets/images/menu_resultados.png")}style={{width: 25, height: 25}}/>
                         )}
-                        label="Profissionais"
-                        labelStyle={{color: '#000'}}
+                        label="Seu resultado"
+                        labelStyle={{color: '#000', fontFamily: 'Montserrat-Bold'}}
                         onPress={() =>{props.navigation.dispatch(CommonActions.reset({
 
                             index:0,
@@ -60,15 +60,50 @@ export function DrawerContent(props){
                               }
                             
                             ]
-                            }))}}
-                    />                
+                            })); props.navigation.dispatch(DrawerActions.closeDrawer());}}
+                    />               
+                    <DrawerItem
+                        icon={({color, size}) =>(
+                            <Image source={require("../assets/images/menu_dicas.png")}style={{width: 25, height: 25}}/>
+                        )}
+                        label="Dicas"
+                        labelStyle={{color: '#000', fontFamily: 'Montserrat-Bold'}}
+                        onPress={() =>{props.navigation.dispatch(CommonActions.reset({
+
+                            index:0,
+                            routes:[
+                              {
+                                name: "Dicas"
+                              }
+                            
+                            ]
+                            })); props.navigation.dispatch(DrawerActions.closeDrawer());}}
+                    /> 
+                    <DrawerItem
+                        icon={({color, size}) =>(
+                            <Image source={require("../assets/images/menu_profissionais.png")}style={{width: 25, height: 25}}/>
+                        )}
+                        label="Profissionais"
+                        labelStyle={{color: '#000', fontFamily: 'Montserrat-Bold'}}
+                        onPress={() =>{props.navigation.dispatch(CommonActions.reset({
+
+                            index:0,
+                            routes:[
+                              {
+                                name: "Profissionais"
+                              }
+                            
+                            ]
+                            })); props.navigation.dispatch(DrawerActions.closeDrawer());} }
+                    /> 
+                    
 
                     <DrawerItem
                         icon={({color, size}) =>(
-                            <FontAwesomeIcon icon={faSignOutAlt}  color="#000" />
+                            <Image source={require('../assets/images/menu_logoff.png')} style={{width: 30, height: 25}}/>
                         )}
                         label="Sair"
-                        labelStyle={{color: '#000'}}
+                        labelStyle={{color: '#000', fontFamily: 'Montserrat-Bold'}}
                         onPress={() =>{AsyncStorage.removeItem("usuario").then(()=> {props.navigation.dispatch(CommonActions.reset({
 
                             index:0,
@@ -80,6 +115,7 @@ export function DrawerContent(props){
                             ]
                             })); props.navigation.dispatch(DrawerActions.closeDrawer());})}}
                     />
+                   
                 </Drawer.Section>
             </DrawerContentScrollView>
             <Drawer.Section style={styles.bottonDrawerSection}>
@@ -107,9 +143,10 @@ const styles = StyleSheet.create({
         paddingLeft: 20
     },
     title: {
-        fontSize: 16,
-        marginTop: 3,
-        fontWeight: 'bold'
+        fontSize: 22,
+        marginTop: 10,
+        fontFamily: 'Montserrat-Bold',
+        color: '#4f4f4f',
     },
     caption: {
         fontSize: 14,

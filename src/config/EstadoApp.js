@@ -3,7 +3,13 @@ export default class EstadoApp{
 
     static tipo="PrimeiraExec";
     static usuario = {};
-
+    static redirect = false;
+    static getRedirect(){
+        return EstadoApp.redirect;
+    }
+    static setRedirect(r){
+        EstadoApp.redirect = r;
+    }
     static getUsuario(){
         return EstadoApp.usuario;
     }

@@ -18,6 +18,13 @@ import SplashScreen from './pages/splashScreen';
 import EstadoApp from './config/EstadoApp';
 const Drawer = createDrawerNavigator();
 const teste = 'oaaaaaaaaa';
+import { Provider as PaperProvider } from 'react-native-paper';
+import {DefaultTheme as DefaultPaperTheme} from 'react-native-paper';
+import Colors from './config/colors';
+import Profissionais from './pages/profissionais';
+import ListaProfissionais from './pages/listaProfissionais';
+import Dicas from './pages/dicas';
+
 const Drawer1 = () =>{
     
     return(
@@ -96,25 +103,45 @@ const Login2 = ({navigation}) =>{
             <Stack.Screen name="Caracterização do zumbido" component={Caracterizacao}  />
             <Stack.Screen name="Logado" component={Logado}  options={{headerShown: false, headerMode:'none'}}/>
             <Stack.Screen name="Resultado" component={Resultado}  />
+            <Stack.Screen name="ListaProfissionais" component={ListaProfissionais}></Stack.Screen>
+            <Stack.Screen name="Profissionais" component={Profissionais}></Stack.Screen>
+            <Stack.Screen name="Dicas" component={Dicas}></Stack.Screen>
         </Stack.Navigator>
     );
 }  
 
 const Logado = ({route}) =>{
-    console.log("VALLL: " + value);
-    return (
-        <Drawer.Navigator
-        initialRouteName="Principal" drawerContent ={props => <DrawerContent {...props} value={value}/>} screenOptions={({ navigation }) => ({ 
-            headerLeft: () =><View><TouchableOpacity onPress={navigation.dispatch(DrawerActions.openDrawer())}><FontAwesomeIcon icon={faBars} color="#fff"/></TouchableOpacity></View>,
-             headerLeftContainerStyle: { paddingLeft: 10 } } 
-             
-         )} 
-                headerMode="float"
-                animation="fade"
-            >
-            <Drawer.Screen name="Principal" component={Elements} ></Drawer.Screen>
-        </Drawer.Navigator>
-    );
+    console.log("VALLL: " + JSON.stringify(route));
+    try{
+        console.log(route.params == null + "AA" + route.params.route);
+        return (
+            <Drawer.Navigator
+            initialRouteName={route.params == null ? "Dicas" : route.params.route} drawerContent ={props => <DrawerContent {...props} value={value}/>} screenOptions={({ navigation }) => ({ 
+                headerLeft: () =><View><TouchableOpacity onPress={navigation.dispatch(DrawerActions.openDrawer())}><FontAwesomeIcon icon={faBars} color="#fff"/></TouchableOpacity></View>,
+                headerLeftContainerStyle: { paddingLeft: 10 } } 
+                
+            )} 
+                    headerMode="float"
+                    animation="fade"
+                >
+                <Drawer.Screen name="Principal" component={Elements} ></Drawer.Screen>
+            </Drawer.Navigator>
+        );
+    }catch(error){
+        return (
+            <Drawer.Navigator
+            initialRouteName="Dicas" drawerContent ={props => <DrawerContent {...props} value={value}/>} screenOptions={({ navigation }) => ({ 
+                headerLeft: () =><View><TouchableOpacity onPress={navigation.dispatch(DrawerActions.openDrawer())}><FontAwesomeIcon icon={faBars} color="#fff"/></TouchableOpacity></View>,
+                headerLeftContainerStyle: { paddingLeft: 10 } } 
+                
+            )} 
+                    headerMode="float"
+                    animation="fade"
+                >
+                <Drawer.Screen name="Principal" component={Elements} ></Drawer.Screen>
+            </Drawer.Navigator>
+        );
+    }
 }
 
 const Elements = ({props, route}) =>{
@@ -128,10 +155,14 @@ const Elements = ({props, route}) =>{
          )} 
                 headerMode="float"
                 animation="fade">
+            <Stack.Screen name="Dicas" component={Dicas}></Stack.Screen>
+
             <Stack.Screen name="Principal" component={Main}></Stack.Screen>
             <Stack.Screen name="Login" options={{headerShown: false}}  component={Login2}></Stack.Screen>
             <Stack.Screen name="Resultado" component={Resultado}></Stack.Screen>
             <Stack.Screen name="Post" component={post}></Stack.Screen>
+            <Stack.Screen name="Profissionais" component={Profissionais}></Stack.Screen>
+            <Stack.Screen name="ListaProfissionais" component={ListaProfissionais}></Stack.Screen>
         </Stack.Navigator>
     );
 }
@@ -141,8 +172,34 @@ const serviceTask = async()=>{
     setTimeout(()=>{}, 1000);
 }
 
-const App = () => {
+const theme2 ={
+    ...DefaultPaperTheme,
+    colors:{
+        primary: Colors.mainColor,
+        placeholder: Colors.mainColor,
+    },
+    fonts:{
+        regular: {
+            fontFamily:"Montserrat-Regular",
+            fontWeight:"normal"
+        },
+        medium: {
+            fontFamily:"Montserrat-Medium",
+            fontWeight:"normal"
+        },
+        light: {
+            fontFamily:"Montserrat-Light",
+            fontWeight:"normal"
+        },
+        thin: {
+            fontFamily:"Montserrat-Thin",
+            fontWeight:"normal"
+        }
+    }
+}
 
+const App = () => {
+    console.log("PAPER: " + JSON.stringify(DefaultPaperTheme));
     AppRegistry.registerHeadlessTask("service", ()=>serviceTask);
     const [isLoading, setIsLoading] = React.useState(true);
 
@@ -170,9 +227,11 @@ const App = () => {
     }
     
     return (
-        <NavigationContainer theme={theme}   >
-           {(isLoading ? <SplashScreen/> : <Condicional/>)}
-        </NavigationContainer>
+        <PaperProvider theme={theme2}>
+            <NavigationContainer theme={theme}   >
+            {(isLoading ? <SplashScreen/> : <Condicional/>)}
+            </NavigationContainer>
+        </PaperProvider>
     );
 
 }

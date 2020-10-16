@@ -21,6 +21,7 @@ import {Picker} from '@react-native-community/picker';
 import instance from '../services/api';
 import AsyncStorage from '@react-native-community/async-storage';
 import EstadoApp from '../config/EstadoApp';
+import Colors from '../config/colors';
 
 function Resultado({route, navigation}){
   
@@ -68,21 +69,19 @@ function Resultado({route, navigation}){
       <ScrollView style={{backgroundColor: '#F0f0f0'}}>
       <StatusBar backgroundColor='#E64A19'/>
         <View style={{backgroundColor: '#F0F0F0', paddingLeft: 15, paddingRight: 15}}>
-          <TouchableOpacity style={{...styles.btn, flexDirection: 'row', alignSelf: 'stretch',alignItems: 'center', alignContent: 'center', justifyContent: 'center', marginTop: 20, padding: 10}} activeOpacity={0.5} onPress={()=> {navigation.navigate("Logado", {teste: 'params' });}}>
-             <Text style={{textAlign: 'center', color: "#FFF", fontWeight: 'bold', fontSize: 15} } >{"PRINCIPAL"}</Text>
-            <FontAwesomeIcon icon={faHome}  color="#FFF" />
-          </TouchableOpacity>
-          <Text style={styles.profissionalNome}>Analisando os seus dados, percebemos que seria interessante você procurar os seguintes profissionais:</Text>
-          <Text style={{...styles.profissionalDados, marginBottom: 10}}>{EstadoApp.getUsuario().encaminhamento}</Text>
-        </View>
-          <View style={{backgroundColor: '#F0F0F0', paddingLeft: 15, paddingRight: 15}}>
-          <FlatList
-            data={profissionais}
-            keyExtractor={item => item.id}
-            renderItem={renderItem}
+          <Image source={require("../assets/images/avaliacao_concluida.png")} style={{alignSelf:'center', width: 295, height: 295}} />
+          <Text style={{fontFamily: 'Montserrat-SemiBold', color: '#4F4F4F', fontSize: 40, alignSelf: 'center', textAlign: 'left'}}>Sua avaliação foi concluída.</Text>
+          <Text style={{fontFamily: 'Montserrat-SemiBold', color: '#4F4F4F', fontSize: 22, textAlign: 'left', marginTop: 25}}>Seu resultado é:</Text>
 
-          />
-          </View>
+          <Text style={{fontFamily: 'Montserrat-SemiBold', color: '#4F4F4F', fontSize: 15, alignSelf: 'center', textAlign: 'left'}}>Analisando as suas respostas, identificamos que o seu zumbido pode estar relacionado às questões alimentares, emocionais e etc. Você receberá dicas que poderão te auxiliar na minimização do sintoma do zumbido e melhorar sua qualidade de vida.
+Mas, não deixe de procurar um profissional especilizado. Pois apenas ele poderá fazer uma avaliação completa e indicar o melhor tratamento. Seguem abaixo alguns especialistas no atendimento a pacientes com zumbido na sua região.</Text>
+          <TouchableOpacity style={{padding: 10,borderRadius: 10,backgroundColor: Colors.accentColor,alignSelf: 'stretch',alignItems: 'center', alignContent: 'center', justifyContent: 'center', marginTop: 20, padding: 10}} activeOpacity={0.5} onPress={()=> {EstadoApp.setRedirect(true); navigation.navigate("Logado", {redirect: true, route: 'Profissionais' });}}>
+             <Text style={{textAlign: 'center', color: "#FFF", fontWeight: 'bold', fontSize: 25, fontFamily: "Montserrat-Bold"} } >{"Consultar profissionais"}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{padding: 10,borderRadius: 10,backgroundColor: Colors.accentColor,alignSelf: 'stretch',alignItems: 'center', marginBottom: 20, alignContent: 'center', justifyContent: 'center', marginTop: 20, padding: 10}} activeOpacity={0.5} onPress={()=> {navigation.navigate("Logado");}}>
+             <Text style={{textAlign: 'center', color: "#FFF", fontWeight: 'bold', fontSize: 25, fontFamily: "Montserrat-Bold"} } >{"Acessar dicas"}</Text>
+          </TouchableOpacity>
+        </View>
         </ScrollView>
     );
 };

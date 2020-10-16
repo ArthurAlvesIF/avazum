@@ -19,6 +19,7 @@ import { CommonActions } from '@react-navigation/native';
 import {Picker} from '@react-native-community/picker';
 import {TextInputMask} from 'react-native-masked-text';
 import { text } from '@fortawesome/fontawesome-svg-core';
+import Colors from '../config/colors';
 const Input = (props) =>{
     
     [genero, setGenero] = useState();
@@ -32,33 +33,37 @@ const Input = (props) =>{
     [cep, setCep] = useState("");
     campos = "";
     return(
-        <View>
-            <TextInput placeholder="Nome"  onChangeText={(textValue) => {setNome(textValue); campos+="1";}} style={styles.input} ></TextInput>
-            <TextInput placeholder="Email" onChangeText={(textValue) => {setEmail(textValue); campos+="2"}} style={styles.input}></TextInput>
-            <TextInput placeholder="Senha" onChangeText={(textValue) => {setSenha(textValue); campos+="3"}} style={styles.input} secureTextEntry={true}></TextInput>
-            <TextInput placeholder="Profissão" onChangeText={(textValue) => {setProfissao(textValue); campos+="4";}} style={styles.input}></TextInput>
+        <View style={{margin: 10}}>
+            <TextInput placeholder="Nome" value={nome} onChangeText={(textValue) => {setNome(textValue); campos+="1";}} style={styles.input} ></TextInput>
+            <TextInput placeholder="Email" value={email}onChangeText={(textValue) => {setEmail(textValue); campos+="2"}} style={styles.input}></TextInput>
+            <TextInput placeholder="Senha" value={senha}onChangeText={(textValue) => {setSenha(textValue); campos+="3"}} style={styles.input} secureTextEntry={true}></TextInput>
+            <TextInput placeholder="Profissão" value={profissao} onChangeText={(textValue) => {setProfissao(textValue); campos+="4";}} style={styles.input}></TextInput>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <TextInputMask placeholder="CEP" value={cep}type={'zip-code'} editable={true} onChangeText={(textValue) => {if (textValue.length == 9) {textValue= textValue.slice(0,5) +"" + textValue.slice(6,10); axios.get("https://viacep.com.br/ws/" + textValue+"/json/").then( res => {console.log(res.data); setCidade(res.data.localidade); setEstado(res.data.uf)})} setCep(textValue); console.log(textValue);}} style={{...styles.input, width: '20%'}}></TextInputMask>
+              <TextInputMask placeholder="CEP" value={cep}type={'zip-code'} editable={true} onChangeText={(textValue) => {if (textValue.length == 9) {textValue= textValue.slice(0,5) +"" + textValue.slice(6,10); axios.get("https://viacep.com.br/ws/" + textValue+"/json/").then( res => {console.log(res.data); setCidade(res.data.localidade); setEstado(res.data.uf)})} setCep(textValue); console.log(textValue);}} style={{...styles.input, width: '30%'}}></TextInputMask>
               <TextInput disab placeholder="Cidade" value={cidade} editable={false} onChangeText={(textValue) => setCidade(textValue)} style={{...styles.input, width: '30%', backgroundColor: "#A9A9A9", color: "#fff"}} placeholderTextColor="#fff" ></TextInput>
               <TextInput placeholder="UF" editable={false} value={estado}onChangeText={(textValue) => setEstado(textValue)} style={{...styles.input, width: '20%', backgroundColor: "#A9A9A9", color: "#fff"}} placeholderTextColor="#fff" ></TextInput>  
 
             </View>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <TextInput placeholder="Idade" onChangeText={(textValue) => setIdade(textValue)} style={styles.input} keyboardType="numeric"></TextInput>
-              <Picker
-                  selectedValue={genero}
-                  style={{width: '80%', alignSelf: 'center'}}
-                  onValueChange={(itemValue, itemIndex) => setGenero(itemValue)}
+              <TextInput placeholder="Idade" value={idade} onChangeText={(textValue) => setIdade(textValue)} style={{...styles.input, width: '20%'}} keyboardType="numeric"></TextInput>
+              <View style={{borderRadius: 10, backgroundColor: '#f0f0f0', overflow: 'hidden', alignSelf: 'center', width: '70%', marginRight: 5}}>
 
-              >  
-                  <Picker.Item label="Selecione o gênero..." value="default" />
-                  <Picker.Item label="Masculino" value="masculino" />
-                  <Picker.Item label="Feminino" value="feminino" />
-              </Picker>
+                <Picker
+                    selectedValue={genero}
+                    onValueChange={(itemValue, itemIndex) => setGenero(itemValue)}
+                    itemStyle={{fontFamily: 'Montserrat-Regular'}}
+                    mode="dropdown"
+                >  
+                    <Picker.Item label="Gênero" value="default" />
+                    <Picker.Item label="Masculino" value="masculino" />
+                    <Picker.Item label="Feminino" value="feminino" />
+                </Picker>
+              </View>
+
 
             </View>
             
-            <TouchableOpacity style={{...styles.btn, width: '80%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'center',alignItems: 'center', marginTop: 20, marginBottom: 10}} activeOpacity={0.5} onPress={()=> {
+            <TouchableOpacity style={{...styles.btn, width: '95%', alignSelf: 'center', flexDirection: 'row', justifyContent: 'center',alignItems: 'center', marginTop: 20, marginBottom: 10}} activeOpacity={0.5} onPress={()=> {
                 if(estado.length != 2){
                   Alert.alert(
                     'Erro',
@@ -73,18 +78,17 @@ const Input = (props) =>{
                     return;
                 }
                 props.navigation.navigate('Caracterização do zumbido',{
-                  nome: this.nome,
-                  email: this.email,
-                  senha: this.senha,
-                  idade: this.idade,
-                  cidade: this.cidade,
-                  estado: this.estado.toUpperCase(),
-                  genero: this.genero,
-                  profissao: this.profissao
+                  nome: nome,
+                  email: email,
+                  senha: senha,
+                  idade: idade,
+                  cidade: cidade,
+                  estado: estado.toUpperCase(),
+                  genero: genero,
+                  profissao: profissao
                 })
               }}>
-              <Text style={{textAlign: 'center', color: "#FFF", fontWeight: 'bold', fontSize: 15} }>{"CONTINUAR"}</Text>
-              <FontAwesomeIcon icon={faArrowRight}  color="#FFF"  style={{marginLeft: 8}}/>
+              <Text style={{textAlign: 'center', color: "#FFF", fontWeight: 'bold', fontSize: 25, fontFamily: "Montserrat-Bold"} }>{"Continuar"}</Text>
 
 
             </TouchableOpacity>
@@ -120,7 +124,7 @@ export default class Cadastrar extends React.Component{
       <KeyboardAvoidingView style={{flex: 1}} behavior={Platform.OS === "ios" ? "padding" : null}>
         <View style={styles.container}>
             <StatusBar backgroundColor='#E64A19'/>
-            <Text style={{textDecorationStyle: 'solid', fontSize: 25, color: '#212121', alignSelf: 'center'}}>Insira seus dados pessoais: </Text>
+            <Text style={{fontFamily: "Montserrat-SemiBold", fontSize: 20, margin: 10,color: '#000', alignSelf: 'center'}}>Prencha com seus dados pessoais: </Text>
             <Input navigation={this.props.navigation}/>
                 
         </View>      
@@ -139,19 +143,18 @@ const styles = StyleSheet.create({
     
   },
   input:{
-    borderColor: "#E64A19",
-    borderWidth: 2,
-    margin: 15,
+    margin: 8,
     borderRadius: 5,
-    paddingLeft: 5
+    paddingLeft: 10,
+    backgroundColor: "#f0f0f0",
+    fontSize: 18,
+    fontFamily: 'Montserrat-SemiBold'
     
   },
   btn: {
     padding: 10,
-    borderColor: "#FF5722",
-    borderRadius: 5,
-    borderWidth: 2,
-    backgroundColor: "#FF5722",
+    borderRadius: 10,
+    backgroundColor: Colors.accentColor,
     alignSelf: 'stretch',
   }
 });
