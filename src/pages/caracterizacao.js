@@ -78,6 +78,7 @@ const Input = (props) =>{
     const [check39, setCheck39] = useState(false);
     const [check40, setCheck40] = useState(false);
     const [check41, setCheck41] = useState(false);
+    const [check42, setCheck42] = useState(false);
 
     const [comorbidades, setCormobidades] = useState("");
     const [checkTextoOutros, setCheckTextoOutros] = useState("");
@@ -323,7 +324,9 @@ const Input = (props) =>{
                         if (global.som)
                             global.som.stop();
                         global.som = som;
+                        som.getCurrentTime((seconds) => console.log('at ' + seconds));
                         som.play((success) => {
+                            
                             if (success) {
                                 console.log('successfully finished playing');
                             } else {
@@ -336,6 +339,7 @@ const Input = (props) =>{
                         console.log('oi');
                       
                         som = new Sound('apito.mp3', Sound.MAIN_BUNDLE, call);
+                        
                         console.log(global.som);
                     }
                     if(e.label === 'Chiado'){
@@ -518,7 +522,7 @@ const Input = (props) =>{
                     onValueChange={() => {
                     setCheck6(!check6);
                 }}/>
-                <Text style={{fontSize: 18}}>Abertura</Text>
+                <Text style={{fontSize: 18}}>Abertura de boca</Text>
             </View>
             <View style={styles.chk}>
                 <CheckBox     value={check28}
@@ -806,6 +810,13 @@ const Input = (props) =>{
                 <Text style={{fontSize: 18}}>Sobrepeso</Text>
             </View>
             <View style={styles.chk}>
+                <CheckBox     value={check42}
+                    onValueChange={() => {
+                    setCheck42(!check42);
+                }}/>
+                <Text style={{fontSize: 18}}>Não tenho nenhum outro problema</Text>
+            </View>
+            <View style={styles.chk}>
                 <CheckBox     value={check39}
                     onValueChange={() => {
                     setCheck39(!check39);
@@ -1014,6 +1025,8 @@ const Input = (props) =>{
         comb.push("Sobrepeso");
         if(check39)
         comb.push("Outros: " + checkTextoOutros);
+        if(check42)
+        comb.push("Nenhum outro problema");
     console.log("Dores" + pioraZumbido);
     let sComb = "";
     comb.map((c) => sComb = sComb + c);
